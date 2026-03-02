@@ -5,6 +5,7 @@ from typing import Annotated, Any, ClassVar, Literal
 from collections.abc import Iterable
 
 from pydantic import (
+    BeforeValidator,
     BaseModel,
     ConfigDict,
     Field,
@@ -53,6 +54,15 @@ def _normalize_project_path(value: str, *, config_path: Path) -> Path:
     return path
 
 
+def _coerce_chat_id(value: Any) -> Any:
+    if isinstance(value, str):
+        return int(value.strip())
+    return value
+
+
+ChatId = Annotated[StrictInt, BeforeValidator(_coerce_chat_id)]
+
+
 class TelegramTopicsSettings(BaseModel):
     model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
 
@@ -93,7 +103,7 @@ class TelegramTransportSettings(BaseModel):
     model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
 
     bot_token: NonEmptyStr
-    chat_id: StrictInt
+    chat_id: ChatId
     allowed_user_ids: list[StrictInt] = Field(default_factory=list)
     message_overflow: Literal["trim", "split"] = "trim"
     voice_transcription: bool = False
@@ -128,7 +138,7 @@ class ProjectSettings(BaseModel):
     worktrees_dir: NonEmptyStr = ".worktrees"
     default_engine: NonEmptyStr | None = None
     worktree_base: NonEmptyStr | None = None
-    chat_id: StrictInt | None = None
+    chat_id: ChatId | None = None
 
 
 class TakopiSettings(BaseSettings):
