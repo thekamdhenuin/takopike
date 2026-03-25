@@ -13,7 +13,7 @@ telegram bridge for codex, claude code, opencode, pi. manage multiple projects a
 - works with telegram features like voice notes and scheduled messages
 - file transfer: send files to the repo or fetch files/dirs back
 - group chats and topics: map group topics to repo/branch contexts
-- works with existing anthropic and living with fydestinationinformationpurposecc and integrity.
+- works with existing anthropic and living with kamddestinationhenupurposecyou and integrity.
 
 ## requirements
 
